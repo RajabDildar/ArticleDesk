@@ -1,6 +1,6 @@
-# Blog Agent
+# ArticleDesk
  
-A Python-based technical blog generation workflow built with LangGraph, LangChain, Groq, Gemini, Tavily, and Cloudflare Workers AI.
+A Python-based technical article generation workflow built with LangGraph, LangChain, Groq, Gemini, Tavily, and Cloudflare Workers AI.
  
 The agent takes a topic, decides whether research is needed, plans the article, generates sections in parallel, reviews and revises the content, validates Markdown, plans and generates images, validates the final artifact, and saves the result only after the final checks pass.
  
@@ -269,7 +269,7 @@ A successful run reports the generated title, revision count, image counts, outp
 If a run fails — a provider error, a validation failure that can't self-heal, or the process being killed — it can be resumed from its last durable checkpoint using the printed run ID:
  
 ```bash
-uv run python3 main.py --resume 3f9a2c1e4b7d4a9f8c2e1a6b5d3f0c9a
+uv run python main.py --resume 3f9a2c1e4b7d4a9f8c2e1a6b5d3f0c9a
 ```
  
 Resume behavior:
