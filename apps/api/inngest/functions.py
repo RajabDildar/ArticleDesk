@@ -1,4 +1,4 @@
-"""Inngest functions defining durable execution steps for Blog Agent runs and maintenance."""
+"""Inngest functions defining durable execution steps for ArticleDesk runs and maintenance."""
 
 from __future__ import annotations
 
@@ -256,14 +256,14 @@ def _handle_run_failure(run_id: str, exc: Exception) -> None:
 
 
 @inngest_client.create_function(
-    fn_id="blog-agent-start-run",
-    name="Start Blog Agent Run",
-    trigger=inngest.TriggerEvent(event="blog-agent/run.start"),
+    fn_id="ArticleDesk-start-run",
+    name="Start ArticleDesk Run",
+    trigger=inngest.TriggerEvent(event="ArticleDesk/run.start"),
     concurrency=[inngest.Concurrency(limit=1)],
     retries=0,
 )
 def start_run_fn(ctx: inngest.ContextSync, step: inngest.StepSync) -> dict[str, Any]:
-    """Inngest function triggered on blog-agent/run.start to execute graph."""
+    """Inngest function triggered on ArticleDesk/run.start to execute graph."""
     run_id = ctx.event.data.get("run_id")
     if not run_id:
         return {"status": "skipped", "reason": "missing_run_id"}
@@ -271,14 +271,14 @@ def start_run_fn(ctx: inngest.ContextSync, step: inngest.StepSync) -> dict[str, 
 
 
 @inngest_client.create_function(
-    fn_id="blog-agent-resume-run",
-    name="Resume Blog Agent Run",
-    trigger=inngest.TriggerEvent(event="blog-agent/run.resume"),
+    fn_id="ArticleDesk-resume-run",
+    name="Resume ArticleDesk Run",
+    trigger=inngest.TriggerEvent(event="ArticleDesk/run.resume"),
     concurrency=[inngest.Concurrency(limit=1)],
     retries=0,
 )
 def resume_run_fn(ctx: inngest.ContextSync, step: inngest.StepSync) -> dict[str, Any]:
-    """Inngest function triggered on blog-agent/run.resume to resume graph."""
+    """Inngest function triggered on ArticleDesk/run.resume to resume graph."""
     run_id = ctx.event.data.get("run_id")
     if not run_id:
         return {"status": "skipped", "reason": "missing_run_id"}
@@ -287,7 +287,7 @@ def resume_run_fn(ctx: inngest.ContextSync, step: inngest.StepSync) -> dict[str,
 
 
 @inngest_client.create_function(
-    fn_id="blog-agent-cleanup-expired-runs",
+    fn_id="ArticleDesk-cleanup-expired-runs",
     name="Cleanup Expired Runs",
     trigger=inngest.TriggerCron(cron="0 * * * *"),
     retries=1,

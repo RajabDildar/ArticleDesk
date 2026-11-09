@@ -52,7 +52,7 @@ EVAL_JUDGE_MODEL=gemini-3.1-flash-lite
 Run a named experiment with caller-supplied pipeline provenance:
 
 ```bash
-uv run python3 -m eval.run_eval \
+uv run python -m eval.run_eval \
   --experiment-name phase8-remediation-baseline \
   --purpose "Baseline after multimodal judge semantics" \
   --pipeline-commit <commit-hash>
@@ -65,7 +65,7 @@ Each experiment writes an immutable `manifest.json`, `results.json`, `report.md`
 Run a candidate experiment:
 
 ```bash
-uv run python3 -m eval.run_eval \
+uv run python -m eval.run_eval \
   --experiment-name phase8-remediation-candidate \
   --purpose "Final remediation candidate evaluation"
 ```
@@ -73,7 +73,7 @@ uv run python3 -m eval.run_eval \
 Compare a candidate experiment against baseline to generate a comparison report with guardrail checks:
 
 ```bash
-uv run python3 -m eval.report \
+uv run python -m eval.report \
   --baseline eval/runs/phase8-remediation-baseline \
   --candidate eval/runs/phase8-remediation-candidate
 ```

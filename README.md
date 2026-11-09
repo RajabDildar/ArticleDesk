@@ -1,4 +1,4 @@
-# Blog Agent
+# ArticleDesk
 
 A Python-based technical blog generation workflow built with LangGraph, LangChain, Groq, Gemini, Tavily, and Cloudflare Workers AI.
 
@@ -137,7 +137,7 @@ LangGraph checkpoints state at every super-step boundary along this path, so a f
 ## Project structure
 
 ```text
-blog-agent/
+ArticleDesk/
 ├── apps/
 │   └── api/                       # FastAPI backend application & Inngest executor
 │       ├── __init__.py
@@ -210,26 +210,26 @@ blog-agent/
 
 ## Technology
 
-| Area | Technology |
-|---|---|
-| Language | Python 3.14+ |
-| Workflow | LangGraph |
-| LLM framework | LangChain |
-| Writing and revision | Groq |
-| Routing, planning, research processing, editing | Gemini |
-| Intent analysis (primary) | Gemini |
-| Intent analysis (fallback) | Groq |
-| Web research | Tavily |
-| Image generation | Cloudflare Workers AI |
-| Structured data | Pydantic |
-| Markdown parsing | markdown-it-py |
-| Markdown formatting | mdformat + GFM |
-| Graph persistence | LangGraph checkpointing (`langgraph-checkpoint-sqlite`) |
-| HTTP backend | FastAPI |
-| Application database | PostgreSQL + SQLAlchemy 2.0 + Alembic |
-| Authentication | Google Identity Services |
-| Package management | uv |
-| Testing | pytest |
+| Area                                            | Technology                                              |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| Language                                        | Python 3.14+                                            |
+| Workflow                                        | LangGraph                                               |
+| LLM framework                                   | LangChain                                               |
+| Writing and revision                            | Groq                                                    |
+| Routing, planning, research processing, editing | Gemini                                                  |
+| Intent analysis (primary)                       | Gemini                                                  |
+| Intent analysis (fallback)                      | Groq                                                    |
+| Web research                                    | Tavily                                                  |
+| Image generation                                | Cloudflare Workers AI                                   |
+| Structured data                                 | Pydantic                                                |
+| Markdown parsing                                | markdown-it-py                                          |
+| Markdown formatting                             | mdformat + GFM                                          |
+| Graph persistence                               | LangGraph checkpointing (`langgraph-checkpoint-sqlite`) |
+| HTTP backend                                    | FastAPI                                                 |
+| Application database                            | PostgreSQL + SQLAlchemy 2.0 + Alembic                   |
+| Authentication                                  | Google Identity Services                                |
+| Package management                              | uv                                                      |
+| Testing                                         | pytest                                                  |
 
 ## Models and providers
 
@@ -250,8 +250,8 @@ The repository's `.env.example` contains the current environment variable names 
 Clone the repository:
 
 ```bash
-git clone https://github.com/RajabDildar/blog-agent.git
-cd blog-agent
+git clone https://github.com/RajabDildar/ArticleDesk.git
+cd ArticleDesk
 ```
 
 Install the project and development dependencies:
@@ -327,7 +327,7 @@ The API will be available at `http://localhost:8000`. The health endpoint is at 
 Start a new article generation run from the local CLI:
 
 ```bash
-uv run python3 main.py
+uv run python main.py
 ```
 
 Enter your article request when prompted:
@@ -358,7 +358,7 @@ A successful run reports the generated title, revision count, image counts, outp
 If a run fails — a provider error, a validation failure that can't self-heal, or the process being killed — it can be resumed from its last durable checkpoint using the printed run ID:
 
 ```bash
-uv run python3 main.py --resume 3f9a2c1e4b7d4a9f8c2e1a6b5d3f0c9a
+uv run python main.py --resume 3f9a2c1e4b7d4a9f8c2e1a6b5d3f0c9a
 ```
 
 Resume behavior:
@@ -375,13 +375,14 @@ Resume behavior:
 
 ## FastAPI Backend (Phase 3)
 
-The `apps/api` package provides the HTTP backend for Blog Agent v3.
+The `apps/api` package provides the HTTP backend for ArticleDesk v3.
 
 ### Authentication
 
 Authentication uses Google Identity Services. The frontend sends a Google credential JWT to `POST /auth/google`. The backend verifies signature, audience, issuer, and expiry using Google's public certificates. The raw Google access token is never stored.
 
 On successful authentication:
+
 - A cryptographically random opaque session token is generated.
 - Only its SHA-256 hash is stored in the `sessions` PostgreSQL table.
 - The raw token is sent as an `HttpOnly`, `SameSite=Lax` cookie named `blog_session`.
@@ -404,11 +405,11 @@ Visitors who have not signed in receive an opaque `blog_anon` cookie (`HttpOnly`
 
 ### Application data model
 
-| Table | Purpose |
-|---|---|
-| `users` | Authenticated users identified by Google `sub` |
-| `sessions` | Hashed opaque session tokens with expiry |
-| `runs` | Article generation requests, status, visibility, and outcomes |
+| Table      | Purpose                                                       |
+| ---------- | ------------------------------------------------------------- |
+| `users`    | Authenticated users identified by Google `sub`                |
+| `sessions` | Hashed opaque session tokens with expiry                      |
+| `runs`     | Article generation requests, status, visibility, and outcomes |
 
 Alembic manages only these application tables. LangGraph checkpoint tables are managed exclusively by LangGraph.
 
@@ -421,23 +422,23 @@ failed | blocked | invalid | cancelled | expired
 
 ### API Endpoints
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/auth/google` | Authenticate with Google ID token |
-| `POST` | `/auth/logout` | Revoke session and clear cookies |
-| `GET` | `/auth/me` | Return authenticated user profile |
-| `POST` | `/runs` | Create a new queued article generation run |
-| `GET` | `/runs` | List runs owned by the current user/session |
-| `GET` | `/runs/{id}` | Fetch a run by ID (owner or public completed only) |
-| `PATCH` | `/runs/{id}/visibility` | Change visibility (completed runs only) |
-| `PATCH` | `/runs/{id}/feature` | Admin-only: feature a public completed article |
-| `POST` | `/runs/{id}/input` | Submit clarification/confirmation input (Phase 4) |
-| `POST` | `/runs/{id}/resume` | Resume a failed/paused run (Phase 4) |
-| `GET` | `/runs/{id}/events` | SSE event stream for generation progress (Phase 4) |
-| `GET/POST/PUT` | `/api/inngest` | Inngest function registration, webhook, and execution handler |
-| `GET` | `/gallery` | Public gallery of completed articles |
-| `GET` | `/featured` | Admin-curated featured articles |
-| `GET` | `/healthz` | Health check |
+| Method         | Path                    | Description                                                   |
+| -------------- | ----------------------- | ------------------------------------------------------------- |
+| `POST`         | `/auth/google`          | Authenticate with Google ID token                             |
+| `POST`         | `/auth/logout`          | Revoke session and clear cookies                              |
+| `GET`          | `/auth/me`              | Return authenticated user profile                             |
+| `POST`         | `/runs`                 | Create a new queued article generation run                    |
+| `GET`          | `/runs`                 | List runs owned by the current user/session                   |
+| `GET`          | `/runs/{id}`            | Fetch a run by ID (owner or public completed only)            |
+| `PATCH`        | `/runs/{id}/visibility` | Change visibility (completed runs only)                       |
+| `PATCH`        | `/runs/{id}/feature`    | Admin-only: feature a public completed article                |
+| `POST`         | `/runs/{id}/input`      | Submit clarification/confirmation input (Phase 4)             |
+| `POST`         | `/runs/{id}/resume`     | Resume a failed/paused run (Phase 4)                          |
+| `GET`          | `/runs/{id}/events`     | SSE event stream for generation progress (Phase 4)            |
+| `GET/POST/PUT` | `/api/inngest`          | Inngest function registration, webhook, and execution handler |
+| `GET`          | `/gallery`              | Public gallery of completed articles                          |
+| `GET`          | `/featured`             | Admin-curated featured articles                               |
+| `GET`          | `/healthz`              | Health check                                                  |
 
 Long-running generation never executes inside request handlers. Inngest triggers handle execution out-of-process via `/api/inngest` while preserving LangGraph `PostgresSaver` checkpoints.
 
@@ -503,7 +504,7 @@ The Markdown layer:
 5. validates the repaired result
 6. formats valid Markdown
 7. validates the formatted result again
-Code blocks are treated as code rather than article structure.
+   Code blocks are treated as code rather than article structure.
 
 ### Images
 
@@ -518,6 +519,7 @@ Before publication, the system checks that:
 - published paths match the paths embedded in Markdown
 - unrelated local image references exist
 - failed image generation does not get silently ignored
+
 ### Publication
 
 The final Markdown is written only after final validation succeeds.

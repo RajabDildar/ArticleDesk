@@ -15,7 +15,7 @@ from blog_agent.services.cloudinary_storage import (
 
 def test_format_cloudinary_public_id():
     pid = format_cloudinary_public_id("run-1234", "architecture_diagram.png")
-    assert pid == "blog-agent/runs/run-1234/images/architecture_diagram"
+    assert pid == "ArticleDesk/runs/run-1234/images/architecture_diagram"
 
 
 def test_is_cloudinary_configured_env(monkeypatch):
@@ -32,7 +32,7 @@ def test_upload_run_image_empty_bytes():
 @patch("cloudinary.uploader.upload")
 def test_upload_run_image_success(mock_upload):
     mock_upload.return_value = {
-        "public_id": "blog-agent/runs/run-1/images/test",
+        "public_id": "ArticleDesk/runs/run-1/images/test",
         "asset_id": "asset-999",
         "format": "png",
         "width": 800,
@@ -44,7 +44,7 @@ def test_upload_run_image_success(mock_upload):
         run_id="run-1", filename="test.png", image_bytes=b"fake-png-data"
     )
     assert res["filename"] == "test.png"
-    assert res["public_id"] == "blog-agent/runs/run-1/images/test"
+    assert res["public_id"] == "ArticleDesk/runs/run-1/images/test"
     assert res["asset_id"] == "asset-999"
     assert res["format"] == "png"
     assert res["width"] == 800
@@ -57,10 +57,10 @@ def test_generate_signed_image_url(mock_url):
         "https://res.cloudinary.com/demo/image/authenticated/s--sig--/v1/test.png",
         {},
     )
-    url = generate_signed_image_url("blog-agent/runs/run-1/images/test")
+    url = generate_signed_image_url("ArticleDesk/runs/run-1/images/test")
     assert "https://res.cloudinary.com" in url
     mock_url.assert_called_once_with(
-        "blog-agent/runs/run-1/images/test",
+        "ArticleDesk/runs/run-1/images/test",
         type="authenticated",
         sign_url=True,
         secure=True,

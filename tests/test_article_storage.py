@@ -107,7 +107,7 @@ def test_cleanup_expired_runs():
         article_assets=[
             {
                 "filename": "img1.png",
-                "public_id": "blog-agent/runs/anon-exp-1/images/img1",
+                "public_id": "ArticleDesk/runs/anon-exp-1/images/img1",
             },
             {"filename": "local.png", "public_id": "local:anon-exp-1:local.png"},
         ],
@@ -129,4 +129,4 @@ def test_cleanup_expired_runs():
             assert anon_run.status == RunStatus.EXPIRED.value
             assert anon_run.article_markdown is None
             assert anon_run.article_assets is None
-            mock_del.assert_called_once_with(["blog-agent/runs/anon-exp-1/images/img1"])
+            mock_del.assert_called_once_with(["ArticleDesk/runs/anon-exp-1/images/img1"])

@@ -129,7 +129,7 @@ def test_get_article_asset_public(monkeypatch):
         assets = [
             {
                 "filename": "arch.png",
-                "public_id": "blog-agent/runs/art-public-2/images/arch",
+                "public_id": "ArticleDesk/runs/art-public-2/images/arch",
                 "asset_id": "a-123",
                 "format": "png",
             }

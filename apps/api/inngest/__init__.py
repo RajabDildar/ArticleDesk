@@ -1,4 +1,4 @@
-"""Inngest background execution package for Blog Agent."""
+"""Inngest background execution package for ArticleDesk."""
 
 from apps.api.inngest.client import inngest_client, send_inngest_event
 from apps.api.inngest.functions import inngest_functions

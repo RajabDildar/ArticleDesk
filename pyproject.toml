@@ -1,5 +1,5 @@
 [project]
-name = "blog-agent"
+name = "ArticleDesk"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

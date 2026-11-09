@@ -58,10 +58,10 @@ def _configure_cloudinary() -> None:
 def format_cloudinary_public_id(run_id: str, filename: str) -> str:
     """
     Generates a deterministic, collision-safe Cloudinary public ID.
-    Format: blog-agent/runs/{run_id}/images/{filename_stem}
+    Format: ArticleDesk/runs/{run_id}/images/{filename_stem}
     """
     filename_stem = Path(filename).stem
-    return f"blog-agent/runs/{run_id}/images/{filename_stem}"
+    return f"ArticleDesk/runs/{run_id}/images/{filename_stem}"
 
 
 def upload_run_image(

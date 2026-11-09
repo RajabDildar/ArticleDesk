@@ -12,9 +12,9 @@ settings = get_settings()
 def create_app() -> FastAPI:
     """Builds and configures the FastAPI application instance."""
     app = FastAPI(
-        title="Blog Agent API",
+        title="ArticleDesk API",
         version="3.0.0",
-        description="FastAPI Backend for Blog Agent Technical Article Generator",
+        description="FastAPI Backend for ArticleDesk Technical Article Generator",
     )
 
     @app.exception_handler(HTTPException)

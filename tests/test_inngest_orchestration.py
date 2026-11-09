@@ -47,7 +47,7 @@ def _new_csrf(client):
 
 
 def test_post_runs_emits_inngest_start_event(db):
-    """POST /runs must emit 'blog-agent/run.start' event with the new run's ID."""
+    """POST /runs must emit 'ArticleDesk/run.start' event with the new run's ID."""
     from apps.api.main import app
 
     client = TestClient(app, base_url="http://localhost:8000")
@@ -75,7 +75,7 @@ def test_post_runs_emits_inngest_start_event(db):
     run_id = data["id"]
 
     assert len(dispatched_events) == 1
-    assert dispatched_events[0]["name"] == "blog-agent/run.start"
+    assert dispatched_events[0]["name"] == "ArticleDesk/run.start"
     assert dispatched_events[0]["data"]["run_id"] == run_id
 
 

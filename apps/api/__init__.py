@@ -1,1 +1,1 @@
-"""FastAPI Backend Application for Blog Agent v3."""
+"""FastAPI Backend Application for ArticleDesk v3."""

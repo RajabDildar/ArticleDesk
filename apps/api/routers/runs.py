@@ -80,7 +80,7 @@ def create_new_run(
 ):
     """
     Submits a new technical article request.
-    Creates a durable queued run in PostgreSQL and dispatches a blog-agent/run.start Inngest event without running generation in-process.
+    Creates a durable queued run in PostgreSQL and dispatches a ArticleDesk/run.start Inngest event without running generation in-process.
     """
     user_id = current_user.id if current_user else None
     anon_id = None if user_id else get_anonymous_id(request, response)
@@ -141,7 +141,7 @@ def create_new_run(
 
     # Dispatch Inngest event with fail-safe handling (Task 7)
     try:
-        send_inngest_event("blog-agent/run.start", {"run_id": run.id})
+        send_inngest_event("ArticleDesk/run.start", {"run_id": run.id})
     except Exception as e:  # noqa: BLE001 - Any dispatch failure must persist a failed run.
         run.status = RunStatus.FAILED.value
         run.error_code = "send_failure"
@@ -323,7 +323,7 @@ def submit_human_input(
 ):
     """
     Submits user response to clarification or confirmation interrupt.
-    Atomically clears interaction to prevent duplicate resume and dispatches a blog-agent/run.resume Inngest event.
+    Atomically clears interaction to prevent duplicate resume and dispatches a ArticleDesk/run.resume Inngest event.
     """
     user_id = current_user.id if current_user else None
     anon_id = (
@@ -427,7 +427,7 @@ def submit_human_input(
     # Dispatch Inngest resume event with fail-safe rollback (Task 7)
     try:
         send_inngest_event(
-            "blog-agent/run.resume",
+            "ArticleDesk/run.resume",
             {"run_id": run_id, "human_response": human_response_payload},
         )
     except Exception as e:  # noqa: BLE001 - Any dispatch failure must restore the pending interaction.
@@ -508,7 +508,7 @@ def resume_paused_run(
     # Dispatch Inngest resume event with fail-safe rollback (Task 7)
     try:
         send_inngest_event(
-            "blog-agent/run.resume", {"run_id": run_id, "human_response": None}
+            "ArticleDesk/run.resume", {"run_id": run_id, "human_response": None}
         )
     except Exception as e:  # noqa: BLE001 - Any dispatch failure must restore the prior run status.
         run.status = prev_status

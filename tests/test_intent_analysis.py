@@ -104,7 +104,7 @@ def test_intent_analysis_invalid_valid():
     analysis = IntentAnalysis(
         outcome="invalid",
         invalid_reason="out_of_scope_non_technical",
-        user_message="Blog Agent focuses on technical articles. Please provide a technical topic.",
+        user_message="ArticleDesk focuses on technical articles. Please provide a technical topic.",
     )
     assert analysis.outcome == "invalid"
     assert analysis.invalid_reason == "out_of_scope_non_technical"

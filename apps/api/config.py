@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
 
     # Phase 4: Inngest Orchestration, Checkpointing, Quotas & Abuse Prevention
-    INNGEST_APP_ID: str = "blog-agent"
+    INNGEST_APP_ID: str = "ArticleDesk"
     INNGEST_EVENT_KEY: str | None = None
     INNGEST_SIGNING_KEY: str | None = None
     CHECKPOINT_BACKEND: str = "postgres"

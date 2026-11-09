@@ -25,7 +25,7 @@ def clear_intent_gateway_caches() -> None:
 
 
 def intent_gateway_node(state: State) -> dict:
-    """The first node in Blog Agent. Validates, classifies, and finalizes user intent."""
+    """The first node in ArticleDesk. Validates, classifies, and finalizes user intent."""
     raw_input = state.get("original_input", "")
     run_id = state.get("run_id", "")
     diagnostics = get_current_diagnostics()

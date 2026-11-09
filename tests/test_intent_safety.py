@@ -124,7 +124,7 @@ def test_invalid_and_out_of_scope_rejected(invalid_input, invalid_reason):
     mock_analysis = IntentAnalysis(
         outcome="invalid",
         invalid_reason=invalid_reason,
-        user_message="Blog Agent is specialized for technical topics. Try a topic like distributed databases or cloud architecture.",
+        user_message="ArticleDesk is specialized for technical topics. Try a topic like distributed databases or cloud architecture.",
     )
     state: State = {
         "run_id": "test-invalid-scope",
